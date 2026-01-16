@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boda Leo & Davi | The Wedding</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fuentes Premium -->
+    <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Montserrat:wght@200;300;400;500;600&family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400;1,500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'olive': '#3A4A3B',       /* Verde Oliva Oscuro */
+                        'sage': '#8A9A8B',        /* Salvia Suave */
+                        'cream': '#FDFCF8',       /* Crema Papel */
+                        'gold': '#B08D55',        /* Dorado Antiguo */
+                        'charcoal': '#1F1F1F',
+                        'paper': '#f4f1ea',
+                    },
+                    fontFamily: {
+                        'serif': ['Italiana', 'serif'],           
+                        'script': ['Pinyon Script', 'cursive'],   
+                        'body': ['Cormorant Garamond', 'serif'],  
+                        'sans': ['Montserrat', 'sans-serif'],     
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'spin-slow': 'spin 15s linear infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #FDFCF8;
+            color: #3A4A3B;
+            overflow-x: hidden;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+        }
+
+        /* --- EFECTOS SCROLL REVEAL --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Retrasos escalonados para listas */
+        .delay-100 { transition-delay: 0.1s; }
+        .delay-200 { transition-delay: 0.2s; }
+        .delay-300 { transition-delay: 0.3s; }
+
+        /* Imagen en Arco (Arch) */
+        .arch-mask {
+            mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg"><path d="M 0 100 A 100 100 0 0 1 200 100 L 200 300 L 0 300 Z" fill="white"/></svg>');
+            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg"><path d="M 0 100 A 100 100 0 0 1 200 100 L 200 300 L 0 300 Z" fill="white"/></svg>');
+            mask-size: cover;
+            -webkit-mask-size: cover;
+            mask-repeat: no-repeat;
+            -webkit-mask-repeat: no-repeat;
+        }
+
+        /* Estilo Masonry CSS Puro */
+        .masonry-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        /* Botón Play Música Flotante */
+        .music-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+            border: 1px solid #B08D55;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        .music-btn:active { transform: scale(0.9); }
+        
+        /* Animación de hojas cayendo (fondo) */
+        .falling-leaves {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .leaf {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: rgba(138, 154, 139, 0.2); /* Sage transparente */
+            border-radius: 50% 0 50% 0;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% { transform: translate(0, -10vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translate(20px, 110vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Utilidad texto vertical */
+        .writing-vertical {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+    </style>
+</head>
+<body class="relative selection:bg-olive selection:text-white">
+<!-- musica -->
+    <audio id="bg-music" loop>
+        <source src="music.mp3" type="audio/mp3">
+    </audio>
+    <!-- Video intro -->
+        <div id="intro-overlay" class="fixed inset-0 z-[100] bg-cream flex flex-col items-center justify-center transition-opacity duration-1000">
+            
+            <div id="intro-content" class="text-center relative z-20 p-6">
+                <span class="font-sans text-xs tracking-[0.4em] uppercase text-olive block mb-6 ">Bienvenidos a nuestra boda</span>
+                <!-- <h1 class="font-script text-6xl md:text-8xl text-gold mb-8">Leo y Davi</h1> -->
+                <h1 class="font-script text-6xl md:text-8xl text-olive mb-8">
+                    Leo<span class="text-5xl md:text-7xl text-gold italic font-sans leading-[1.8] py-2 md:ml-12">&</span> Davi
+                </h1>
+                
+                <button onclick="playIntro()" class="group relative px-8 py-3 bg-transparent overflow-hidden rounded-full border border-olive text-olive transition-all hover:text-white">
+                    <div class="absolute inset-0 w-0 bg-olive transition-all duration-[250ms] ease-out group-hover:w-full"></div>
+                    <span class="relative font-serif text-xl tracking-widest group-hover:text-white flex items-center gap-2">
+                        ENTRAR <i data-lucide="play" class="w-4 h-4 fill-current"></i>
+                    </span>
+                </button>
+            </div>
+
+        <video id="wedding-video" class="absolute inset-0 w-full h-full object-contain bg-black hidden" playsinline>
+                <source src="img/intro.mp4" type="video/mp4">
+            </video>
+
+            <button id="skip-btn" onclick="finishIntro()" class="hidden absolute bottom-8 right-8 z-30 text-white font-sans text-xs uppercase tracking-widest border border-white/30 px-4 py-2 rounded-full hover:bg-white/20 backdrop-blur-sm transition-all">
+                Saltar Intro
+            </button>
+        </div>
+    <!-- DECORACIÓN FIJA -->
+    <div class="falling-leaves" id="leaves-container"></div>
+    
+    <!-- Botón Música (Interacción) -->
+    <div class="music-btn" onclick="toggleMusic(this)">
+        <i data-lucide="music" class="text-olive w-5 h-5"></i>
+    </div>
+
+    <!-- Bordes Finos -->
+    <div class="fixed top-2 left-2 right-2 h-px bg-gold/30 z-40"></div>
+    <div class="fixed bottom-2 left-2 right-2 h-px bg-gold/30 z-40"></div>
+    <div class="fixed top-2 bottom-2 left-2 w-px bg-gold/30 z-40"></div>
+    <div class="fixed top-2 bottom-2 right-2 w-px bg-gold/30 z-40"></div>
+
+    <!-- 1. HERO SECTION (Impacto Visual) -->
+    <header class="min-h-screen relative flex flex-col items-center justify-center overflow-hidden py-10 px-4">
+        
+        <!-- Ilustración SVG Fondo -->
+        <svg class="absolute top-0 right-0 w-64 h-64 text-olive/5 transform rotate-180 z-0" viewBox="0 0 200 200">
+            <path fill="currentColor" d="M45.7,-76.3C58.9,-69.3,69.1,-55.8,76.5,-41.8C83.9,-27.8,88.5,-13.3,86.6,0.5C84.7,14.4,76.3,27.6,66.8,39.6C57.3,51.6,46.7,62.3,34.2,69.5C21.7,76.7,7.3,80.3,-5.7,77.7C-18.7,75.1,-30.3,66.3,-41.7,57.1C-53.1,47.9,-64.3,38.3,-71.4,26.4C-78.5,14.5,-81.5,0.3,-78.9,-12.8C-76.3,-25.9,-68.1,-37.9,-57.8,-47C-47.5,-56.1,-35.1,-62.3,-22.6,-68.8C-10.1,-75.3,2.5,-82.1,15.7,-81.9C28.9,-81.7,42.7,-74.5,45.7,-76.3Z" transform="translate(100 100)" />
+        </svg>
+
+        <div class="relative z-10 w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            
+            <!-- Columna Izquierda: Textos -->
+            <div class="md:col-span-4 text-center md:text-left order-2 md:order-1 reveal delay-100">
+                <span class="font-sans text-xs tracking-[0.4em] uppercase text-gold block mb-4">Save The Date</span>
+                
+                <h1 class="font-script text-olive flex flex-col items-center md:items-start">
+                    <span class="text-6xl md:text-8xl leading-tight">Leo</span>
+                    
+                    <span class="text-5xl md:text-7xl text-gold italic font-sans leading-[1.8] py-2 md:ml-12">
+                        &
+                    </span>
+            
+                    <span class="text-6xl md:text-8xl leading-tight">Davi</span>
+                </h1>
+
+                <div class="mt-8 flex items-center justify-center md:justify-start gap-4">
+                    <div class="h-px w-12 bg-olive"></div>
+                    <p class="font-body text-xl italic text-gray-600">¡Nos casamos!</p>
+                </div>
+            </div>
+
+            <!-- Columna Central: Imagen Principal (Arco) -->
+            <div class="md:col-span-4 order-1 md:order-2 relative flex justify-center reveal">
+                <div class="relative w-64 h-96 md:w-80 md:h-[500px]">
+                    <!-- Marco SVG dibujado alrededor -->
+                    <div class="absolute -inset-4 border border-gold/30 rounded-t-[10rem] rounded-b-[10rem] z-0"></div>
+                    
+                    <!-- Imagen con máscara de arco -->
+                   <div class="w-full h-full arch-mask relative z-10 shadow-2xl overflow-hidden">
+                        <img src="img/principal.jpeg" class="w-full h-full object-cover hover:scale-105 transition-all duration-1000">
+                    </div>
+
+                    <!-- Badge Giratorio -->
+                    <div class="absolute -bottom-8 -right-8 md:-right-12 z-20 animate-spin-slow">
+                        <div class="relative w-28 h-28 bg-cream rounded-full border border-olive/20 shadow-lg flex items-center justify-center p-2">
+                             <svg viewBox="0 0 100 100" class="w-full h-full absolute top-0 left-0">
+                                <path id="curve" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="transparent"/>
+                                <text class="text-[10px] uppercase font-sans tracking-widest fill-olive font-bold">
+                                    <textPath xlink:href="#curve">
+                                        • 19 Junio 2026 • Vigo • España •
+                                    </textPath>
+                                </text>
+                            </svg>
+                            <span class="font-serif text-3xl text-gold pt-1">19</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Countdown -->
+            <div class="md:col-span-4 text-center md:text-right order-3 reveal delay-200 mt-8 md:mt-0">
+                <p class="font-body text-lg text-gray-500 italic mb-6">Faltan para el sí...</p>
+                <div id="countdown" class="flex justify-center md:justify-end gap-6 font-sans text-olive">
+                    <div><span id="days" class="text-4xl block">00</span><span class="text-[0.6rem] uppercase tracking-widest text-sage">Días</span></div>
+                    <div><span id="hours" class="text-4xl block">00</span><span class="text-[0.6rem] uppercase tracking-widest text-sage">Hrs</span></div>
+                    <div><span id="minutes" class="text-4xl block">00</span><span class="text-[0.6rem] uppercase tracking-widest text-sage">Min</span></div>
+                    <div><span id="seconds" class="text-4xl block">00</span><span class="text-[0.6rem] uppercase tracking-widest text-sage">Seg</span></div>
+                </div>
+                <div class="mt-8">
+                     <svg class="w-8 h-20 text-olive mx-auto md:ml-auto md:mr-0 opacity-50" viewBox="0 0 24 100" fill="none" stroke="currentColor">
+                        <path d="M12 0L12 100M12 100L5 90M12 100L19 90" stroke-width="1"/>
+                    </svg>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- 2. HISTORIA CON ILUSTRACIONES -->
+    <section class="py-24 px-6 relative bg-white overflow-hidden">
+        <!-- Ramas de olivo SVG en esquinas -->
+        <svg class="absolute top-0 left-0 w-40 h-40 text-olive/10 -translate-x-10 -translate-y-10" viewBox="0 0 100 100" fill="currentColor">
+            <path d="M50 0 C20 40 0 60 10 100 C40 80 80 50 50 0 Z M30 30 C20 50 10 60 20 80"/>
+        </svg>
+        <svg class="absolute bottom-0 right-0 w-40 h-40 text-olive/10 translate-x-10 translate-y-10 rotate-180" viewBox="0 0 100 100" fill="currentColor">
+            <path d="M50 0 C20 40 0 60 10 100 C40 80 80 50 50 0 Z"/>
+        </svg>
+
+        <div class="max-w-3xl mx-auto text-center relative z-10 reveal">
+            <i data-lucide="heart" class="w-6 h-6 text-gold mx-auto mb-6 animate-pulse-slow"></i>
+            <h2 class="font-serif text-4xl md:text-5xl text-olive mb-8 leading-tight">
+                "La medida del amor es amar sin medida.
+            </h2>
+            <p class="font-body text-xl text-gray-600 leading-relaxed italic">
+                Después de caminar juntos durante tanto tiempo, estamos listos para dar el paso más importante de nuestro viaje. No imaginamos mejor manera de celebrar nuestra fe y alegría que compartiéndolas con quienes hacen nuestro mundo más bonito.
+            </p>
+            <div class="mt-12">
+                <span class="font-script text-3xl text-gold">¡Rumbo al altar!</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. EVENTOS (Diseño Tarjetas Flotantes) -->
+    <section class="py-20 px-4 md:px-12 bg-paper relative">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 relative z-10">
+            
+            <!-- Tarjeta Ceremonia -->
+            <div class="bg-white p-4 pb-8 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 reveal">
+                <div class="h-64 overflow-hidden relative mb-6">
+                    <div class="absolute inset-0 bg-olive/20 z-10"></div>
+                    <img src="img/iglesia.jpg" class="w-full h-full object-cover transition-transform duration-700 hover:scale-110">
+                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-4 py-2 z-20 border-l-2 border-gold">
+                        <span class="font-serif text-xl text-olive">17:30 h</span>
+                    </div>
+                </div>
+                <div class="px-6 text-center">
+                    <div class="inline-block p-3 rounded-full bg-paper mb-4">
+                        <i data-lucide="church" class="w-6 h-6 text-olive"></i>
+                    </div>
+                    <h3 class="font-serif text-3xl text-olive mb-1">Ceremonia</h3>
+                    <p class="font-script text-xl text-gold mb-4">Iglesia Santo Tomé de Freixeiro</p>
+                    <div class="h-px w-10 bg-gray-200 mx-auto mb-4"></div>
+                    <p class="font-sans text-xs text-gray-500 uppercase tracking-widest mb-6">
+                        Baixada ó Pontillón, 9<br>Vigo
+                    </p>
+                    <a href="https://maps.app.goo.gl/5jxvPoVkgV5TuLHA6" target="_blank" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-olive hover:text-gold transition-colors group">
+                        Ver Mapa <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Tarjeta Celebración -->
+            <div class="bg-white p-4 pb-8 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 reveal delay-100">
+                <div class="h-64 overflow-hidden relative mb-6">
+                    <div class="absolute inset-0 bg-olive/20 z-10"></div>
+                    <img src="img/rectoral.jpg" class="w-full h-full object-cover transition-transform duration-700 hover:scale-110">
+                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-4 py-2 z-20 border-l-2 border-gold">
+                        <span class="font-serif text-xl text-olive">19:00 h</span>
+                    </div>
+                </div>
+                <div class="px-6 text-center">
+                    <div class="inline-block p-3 rounded-full bg-paper mb-4">
+                        <i data-lucide="wine" class="w-6 h-6 text-olive"></i>
+                    </div>
+                    <h3 class="font-serif text-3xl text-olive mb-1">Celebración</h3>
+                    <p class="font-script text-xl text-gold mb-4">Hotel Rectoral de Cobres</p>
+                    <div class="h-px w-10 bg-gray-200 mx-auto mb-4"></div>
+                    <p class="font-sans text-xs text-gray-500 uppercase tracking-widest mb-6">
+                        Rúa Iglesario sn<br>Vilaboa
+                    </p>
+                    <a href="https://maps.app.goo.gl/jzqCsnVkxg6S5BMb8" target="_blank" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-olive hover:text-gold transition-colors group">
+                        Ver Mapa <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+ <!-- 4. TIMELINE INTERACTIVO (Tu Sección Solicitada) -->
+    <section class="py-24 px-6 bg-olive text-white relative">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-center font-title text-3xl mb-16 text-gold tracking-widest uppercase font-serif">Itinerario</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center reveal">
+                <!-- Step 1 -->
+                <div class="group">
+                    <div class="w-20 h-20 mx-auto rounded-full border-2 border-gold flex items-center justify-center mb-6 group-hover:bg-gold group-hover:text-olive transition-all duration-300">
+                        <i data-lucide="church" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-serif text-xl mb-2">17:30h</h3>
+                    <p class="font-body text-lg italic text-white/80">Ceremonia</p>
+                    <p class="text-xs mt-2 text-white/50 font-sans uppercase">Santo Tomás</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="group">
+                    <div class="w-20 h-20 mx-auto rounded-full border-2 border-gold flex items-center justify-center mb-6 group-hover:bg-gold group-hover:text-olive transition-all duration-300">
+                        <i data-lucide="utensils-crossed" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-serif text-xl mb-2">19:00h</h3>
+                    <p class="font-body text-lg italic text-white/80">Recepción & Cena</p>
+                    <p class="text-xs mt-2 text-white/50 font-sans uppercase">Rectoral de Cobres</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="group">
+                    <div class="w-20 h-20 mx-auto rounded-full border-2 border-gold flex items-center justify-center mb-6 group-hover:bg-gold group-hover:text-olive transition-all duration-300">
+                        <i data-lucide="music" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-serif text-xl mb-2">22:00h</h3>
+                    <p class="font-body text-lg italic text-white/80">Fiesta</p>
+                    <p class="text-xs mt-2 text-white/50 font-sans uppercase">¡A Bailar!</p>
+                </div>
+            </div>
+            
+            <div class="mt-16 text-center border-t border-white/10 pt-8 reveal">
+                <i data-lucide="camera" class="w-6 h-6 mx-auto text-gold mb-2"></i>
+                <p class="font-serif text-2xl">¡Preparen sus mejores sonrisas que se vienen muchas fotos juntos!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. GALERÍA MASONRY (Creativa) -->
+ <section class="py-24 px-4 bg-white">
+        <div class="text-center mb-16 reveal">
+            <span class="font-sans text-xs tracking-[0.3em] uppercase text-gold">Momentos</span>
+            <h2 class="font-serif text-4xl text-olive mt-2">Nuestra Historia</h2>
+        </div>
+
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <div class="h-[400px] group relative overflow-hidden rounded-sm reveal delay-100">
+                <img src="img/comienzo.jpeg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                <div class="absolute inset-0 bg-olive/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <span class="font-script text-3xl text-white">El Comienzo</span>
+                </div>
+            </div>
+
+            <div class="h-[400px] bg-paper p-8 flex flex-col items-center justify-center text-center border border-olive/10 reveal delay-100">
+                <i data-lucide="quote" class="w-8 h-8 text-gold mb-4"></i>
+                <p class="font-sans text-2xl italic text-olive">"Yo quiero algo que se quede para siempre, algo que solo se da una vez en la vida"</p>
+            </div>
+
+            <div class="h-[400px] group relative overflow-hidden rounded-sm reveal delay-200">
+                <img src="img/casados.jpeg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+            </div>
+
+            <div class="h-[350px] bg-olive p-1 rounded-sm reveal delay-200">
+                <div class="h-full w-full border border-white/20 p-6 flex flex-col items-center justify-center text-center text-white">
+                    <p class="font-body text-xl">Viajes, risas y ahora...</p>
+                    <p class="font-serif text-3xl text-gold mt-2">¡El Sí Quiero!</p>
+                </div>
+            </div>
+
+            <div class="h-[350px] flex items-center justify-center reveal delay-300">
+                <div class="relative w-full max-w-[90%] group rotate-2 hover:rotate-0 transition-transform duration-300 shadow-xl bg-white p-3">
+                    <div class="aspect-[4/3] overflow-hidden">
+                        <img src="img/junto.jpeg" class="w-full h-full object-cover">
+                    </div>
+                    <p class="font-script text-center text-2xl text-gray-500 mt-2">Chikis forever</p>
+                </div>
+            </div>
+
+            <div class="h-[350px] group relative overflow-hidden rounded-sm reveal delay-300">
+                <img src="img/si.jpeg" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+            </div>
+
+        </div>
+    </section>
+<!-- 6. REGALO (SECCIÓN DESTACADA) -->
+    <section class="py-20 px-6 bg-olive text-cream relative overflow-hidden">
+        <!-- Patrón de fondo sutil -->
+        <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22 opacity=%221%22/%3E%3C/svg%3E');"></div>
+        
+        <div class="max-w-3xl mx-auto relative z-10 text-center">
+            <!-- Marco decorativo -->
+            <div class="border-2 border-gold/30 p-8 md:p-16 rounded-sm relative">
+                <!-- Icono Flotante -->
+                <div class="absolute -top-10 left-1/2 transform -translate-x-1/2 w-20 h-20 bg-gold rounded-full flex items-center justify-center shadow-lg border-4 border-olive">
+                    <i data-lucide="gift" class="w-10 h-10 text-olive"></i>
+                </div>
+
+                <div class="mt-8 reveal">
+                    <h2 class="font-serif text-3xl md:text-4xl text-gold mb-6">Regalo de Boda</h2>
+                    <p class="font-script text-3xl md:text-4xl text-white/90 mb-6">
+                        "Vuestra presencia es nuestro mayor regalo"
+                    </p>
+                    <div class="w-16 h-px bg-gold/50 mx-auto mb-6"></div>
+                    <p class="font-body text-xl text-white/80 leading-relaxed italic">
+                        Pero si algo nos queréis obsequiar<br> 
+                        en efectivo lo sabremos apreciar.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- 6. RSVP (Estilo Papelería Fina) -->
+    <section class="py-24 px-4 bg-paper relative">
+        <!-- Manchas de acuarela decorativas (SVG) -->
+        <svg class="absolute top-1/2 left-0 w-64 h-64 text-gold/5 -translate-y-1/2 pointer-events-none" viewBox="0 0 200 200">
+             <path fill="currentColor" d="M42.7,-72.2C54.8,-66.6,63.6,-53.2,71.2,-39.8C78.8,-26.4,85.2,-13.2,84.1,-0.6C83,12,74.4,24,65.3,35.3C56.2,46.6,46.6,57.2,35.5,63.7C24.4,70.2,11.8,72.6,-1.2,74.7C-14.2,76.8,-28.3,78.6,-40.4,72.7C-52.5,66.8,-62.5,53.2,-70.6,38.8C-78.7,24.4,-84.9,9.2,-83.1,-5.1C-81.3,-19.4,-71.5,-32.8,-60.8,-43.3C-50.1,-53.8,-38.5,-61.4,-26.8,-67.2C-15.1,-73,-3.3,-77,9.3,-76.8L21.9,-76.6Z" transform="translate(100 100)" />
+        </svg>
+
+        <div class="max-w-2xl mx-auto bg-white p-8 md:p-12 shadow-2xl relative z-10 border border-olive/10 reveal">
+            
+            <div class="text-center mb-10">
+                <p class="font-sans text-xs tracking-[0.3em] text-gold uppercase mb-2">¡Reserva tu silla!</p>
+                <h2 class="font-serif text-4xl text-olive">Confirmación Individual</h2>
+                <div class="w-12 h-0.5 bg-olive mx-auto mt-4"></div>
+            </div>
+
+            <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {window.location='gracias.html';}"></iframe>
+
+            <form action="https://docs.google.com/forms/d/e/1FAIpQLSfS7AeLAsg3XdQcTvNeCMUfXNX82SIqmzcA6l_zFYEqjuMZcw/formResponse" 
+                method="post" 
+                target="hidden_iframe" 
+                onsubmit="submitted=true;" 
+                class="space-y-8">
+                
+                <div class="relative group">
+                    <!-- <input type="text" name="entry.810711785" required 
+                        class="block w-full border-b border-gray-300 py-3 text-olive text-lg focus:outline-none focus:border-gold bg-transparent text-center font-serif placeholder-transparent peer" 
+                        placeholder="Nombre">
+                    <label class="absolute left-0 right-0 top-3 text-gray-400 text-sm font-sans uppercase tracking-widest text-center transition-all peer-focus:-top-4 peer-focus:text-xs peer-focus:text-gold peer-not-placeholder-shown:-top-4 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:text-gold pointer-events-none">
+                        Nombre y Apellidos
+                    </label> -->
+                    <label class="block text-xs font-sans font-bold text-gold uppercase tracking-widest mb-2 text-center">
+                        Nombre y Apellidos
+                    </label>
+                    <input type="text" name="entry.810711785" required class="block w-full border-b border-gray-300 py-2 text-olive text-xl text-center bg-transparent focus:outline-none focus:border-gold transition-colors font-serif placeholder-gray-300" placeholder="">
+                
+                </div>
+
+                <div class="relative group">
+                    <!-- <input type="email" name="entry.1322592542" required 
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                        class="block w-full border-b border-gray-300 py-3 text-olive text-lg focus:outline-none focus:border-gold bg-transparent text-center font-serif placeholder-transparent peer" 
+                        placeholder="Email">
+                    <label class="absolute left-0 right-0 top-3 text-gray-400 text-sm font-sans uppercase tracking-widest text-center transition-all peer-focus:-top-4 peer-focus:text-xs peer-focus:text-gold peer-not-placeholder-shown:-top-4 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:text-gold pointer-events-none">
+                        Correo Electrónico
+                    </label> -->
+                    <label class="block text-xs font-sans font-bold text-gold uppercase tracking-widest mb-2 text-center">
+                        Correo Electrónico
+                    </label>
+                    <input type="email" name="entry.1322592542" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"class="block w-full border-b border-gray-300 py-2 text-olive text-xl text-center bg-transparent focus:outline-none focus:border-gold transition-colors font-serif placeholder-gray-300" placeholder="">
+                </div>
+
+                <div>
+                    <span class="block text-center text-xs font-bold text-gold uppercase tracking-widest mb-4">¿Asistirás?</span>
+                    <div class="flex flex-col md:flex-row gap-4 justify-center">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="entry.1632340290" value="SI" class="peer sr-only" required>
+                            <div class="px-6 py-3 border border-olive text-olive rounded-full peer-checked:bg-olive peer-checked:text-white transition-all text-center font-body text-lg hover:bg-olive/5">
+                                ¡Sí, allí estaré!
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="entry.1632340290" value="NO" class="peer sr-only">
+                            <div class="px-6 py-3 border border-gray-300 text-gray-500 rounded-full peer-checked:bg-gray-500 peer-checked:text-white transition-all text-center font-body text-lg hover:bg-gray-50">
+                                Lo siento, no podré
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="relative group">
+                    <!-- <input type="text" name="entry.1414396014" 
+                            class="block w-full border-b border-gray-300 py-3 text-olive text-lg focus:outline-none focus:border-gold bg-transparent text-center font-serif placeholder-transparent peer" 
+                            placeholder="Alergias">
+                    <label class="absolute left-0 right-0 top-3 text-gray-400 text-sm font-sans uppercase tracking-widest text-center transition-all peer-focus:-top-4 peer-focus:text-xs peer-focus:text-gold peer-not-placeholder-shown:-top-4 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:text-gold pointer-events-none">
+                        Alergias / Intolerancias 
+                    </label> -->
+                     <label class="block text-xs font-sans font-bold text-gold uppercase tracking-widest mb-2 text-center">
+                        Alergias / Intolerancias 
+                    </label>
+                    <input type="text" name="entry.1414396014" required class="block w-full border-b border-gray-300 py-2 text-olive text-xl text-center bg-transparent focus:outline-none focus:border-gold transition-colors font-serif placeholder-gray-300" placeholder="">
+                
+                </div>
+
+                <div class="relative group">
+                    <!-- <input type="text" name="entry.186717456" 
+                            class="block w-full border-b border-gray-300 py-3 text-olive text-lg focus:outline-none focus:border-gold bg-transparent text-center font-serif placeholder-transparent peer" 
+                            placeholder="Mensaje">
+                    <label class="absolute left-0 right-0 top-3 text-gray-400 text-sm font-sans uppercase tracking-widest text-center transition-all peer-focus:-top-4 peer-focus:text-xs peer-focus:text-gold peer-not-placeholder-shown:-top-4 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:text-gold pointer-events-none">
+                        Mensaje (opcional)
+                    </label> -->
+                    <label class="block text-xs font-sans font-bold text-gold uppercase tracking-widest mb-2 text-center">
+                        Mensaje (opcional)
+                    </label>
+                    <input type="text" name="entry.186717456" required class="block w-full border-b border-gray-300 py-2 text-olive text-xl text-center bg-transparent focus:outline-none focus:border-gold transition-colors font-serif placeholder-gray-300" placeholder="">
+                
+                </div>
+
+                <button type="submit" class="w-full bg-olive text-white py-4 font-sans text-sm font-bold tracking-[0.2em] uppercase hover:bg-gold transition-all duration-300 shadow-lg mt-4 transform active:scale-95">
+                    Confirmar Asistencia
+                </button>
+            </form>
+
+            <script type="text/javascript">
+                var submitted = false;
+                document.getElementById('hidden_iframe').onload = function() {
+                    if (submitted) {
+                        // ELIGE TU ACCIÓN AQUÍ:
+                        alert("¡Confirmación recibida! Te hemos enviado un correo.");
+                        window.location.reload(); 
+                        // o window.location = 'gracias.html';
+                    }
+                }
+            </script>
+        </div>
+    </section>
+
+    <!-- 7. FOOTER DE AUTOR -->
+    <footer class="bg-olive text-cream pt-24 pb-12 px-6 text-center relative overflow-hidden">
+         <!-- SVG Fondo -->
+         <svg class="absolute bottom-0 left-0 w-full h-64 text-white/5 pointer-events-none" viewBox="0 0 1440 320">
+            <path fill="currentColor" fill-opacity="1" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,261.3C960,256,1056,224,1152,197.3C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+        </svg>
+
+        <div class="relative z-10">
+            <!-- <h2 class="font-script text-[4rem] md:text-[6rem] text-gold leading-none mb-2">Leo y Davi</h2> -->
+             <h1 class="font-script text-6xl md:text-8xl text-gold mb-8">
+                    Leo<span class="text-5xl md:text-7xl text-gold italic font-sans leading-[1.8] py-2 md:ml-12">&</span> Davi
+                </h1>
+            <p class="font-serif text-lg italic text-white-800 mb-12">19 de Junio de 2026</p>
+            <p class="text-[10px] text-white-600 font-sans uppercase tracking-widest">
+                Diseñado con amor para una boda inolvidable
+            </p>
+        </div>
+    </footer>
+
+    <script>
+    lucide.createIcons();
+    const weddingDate = new Date('June 19, 2026 17:30:00').getTime();
+
+    // 1. CUENTA REGRESIVA
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const gap = weddingDate - now;
+
+        if (gap > 0) {
+            const second = 1000;
+            const minute = second * 60;
+            const hour = minute * 60;
+            const day = hour * 24;
+
+            document.getElementById('days').innerText = Math.floor(gap / day);
+            document.getElementById('hours').innerText = Math.floor((gap % day) / hour);
+            document.getElementById('minutes').innerText = Math.floor((gap % hour) / minute);
+            document.getElementById('seconds').innerText = Math.floor((gap % minute) / second);
+        }
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // 2. SCROLL REVEAL
+    function reveal() {
+        var reveals = document.querySelectorAll(".reveal");
+        for (var i = 0; i < reveals.length; i++) {
+            var windowHeight = window.innerHeight;
+            var elementTop = reveals[i].getBoundingClientRect().top;
+            var elementVisible = 100;
+            if (elementTop < windowHeight - elementVisible) {
+                reveals[i].classList.add("active");
+            }
+        }
+    }
+    window.addEventListener("scroll", reveal);
+    reveal();
+
+    // 3. HOJAS CAYENDO
+    function createLeaves() {
+        const container = document.getElementById('leaves-container');
+        const leafCount = 15;
+        for(let i = 0; i < leafCount; i++) {
+            const leaf = document.createElement('div');
+            leaf.classList.add('leaf');
+            leaf.style.left = Math.random() * 100 + 'vw';
+            leaf.style.animationDuration = (Math.random() * 5 + 10) + 's';
+            leaf.style.animationDelay = Math.random() * 10 + 's';
+            leaf.style.opacity = Math.random() * 0.5 + 0.2;
+            container.appendChild(leaf);
+        }
+    }
+    createLeaves();
+
+    // 4. FORMULARIO
+    function handleFormSubmit(e) {
+        e.preventDefault();
+        const btn = e.target.querySelector('button');
+        btn.innerText = "ENVIANDO...";
+        btn.style.opacity = "0.8";
+        
+        setTimeout(() => {
+            btn.innerText = "¡CONFIRMADO!";
+            btn.style.backgroundColor = "#B08D55";
+            btn.style.opacity = "1";
+            e.target.reset();
+            alert("¡Gracias! Tu confirmación ha sido enviada.");
+        }, 1500);
+    }
+
+    // 5. INTRO + MÚSICA (Lógica Unificada)
+    
+    // Bloquear scroll al inicio
+    document.body.style.overflow = 'hidden';
+    
+    let isPlaying = false; 
+
+    // Función del botón "ENTRAR" (Intro)
+    function playIntro() {
+        const overlayContent = document.getElementById('intro-content');
+        const video = document.getElementById('wedding-video');
+        const skipBtn = document.getElementById('skip-btn');
+        const music = document.getElementById('bg-music');
+        
+        // 1. ARRANCAR MÚSICA
+        if(music) {
+            music.volume = 0.5;
+            music.play().catch(e => console.log("Audio bloqueado:", e));
+            isPlaying = true;
+            
+            // Actualizar botón flotante a "Activo"
+            const musicBtn = document.querySelector('.music-btn');
+            if(musicBtn) {
+                musicBtn.style.backgroundColor = '#B08D55';
+                musicBtn.style.color = 'white';
+            }
+        }
+
+        // 2. MOSTRAR VIDEO
+        overlayContent.style.opacity = '0';
+        setTimeout(() => {
+            overlayContent.style.display = 'none';
+            video.classList.remove('hidden');
+            skipBtn.classList.remove('hidden');
+            video.play();
+        }, 500);
+    }
+
+    // Función del botón flotante (Solo apagar/encender)
+    function toggleMusic(btn) {
+        const music = document.getElementById('bg-music');
+        if (!music) return;
+
+        if (music.paused) {
+            music.play();
+            isPlaying = true;
+            btn.style.backgroundColor = '#B08D55';
+            btn.style.color = 'white';
+        } else {
+            music.pause();
+            isPlaying = false;
+            btn.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+            btn.style.color = '#3A4A3B';
+        }
+    }
+
+    // Al terminar el video
+    document.getElementById('wedding-video').addEventListener('ended', finishIntro);
+
+    function finishIntro() {
+        const overlay = document.getElementById('intro-overlay');
+        const video = document.getElementById('wedding-video');
+        
+        // Ocultar overlay suavemente
+        overlay.style.opacity = '0';
+        document.body.style.overflow = 'auto'; // Permitir scroll
+        
+        setTimeout(() => {
+            overlay.style.display = 'none';
+            video.pause(); 
+            // La música NO se pausa aquí, sigue sonando de fondo.
+        }, 1000);
+    }
+</script>
+</body>
+</html>
