@@ -6,7 +6,8 @@
     <title>Boda Leo & Davi | The Wedding</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Fuentes Premium -->
-    <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Montserrat:wght@200;300;400;500;600&family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400;1,500&display=swap" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Montserrat:wght@200;300;400;500;600&family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400;1,500&display=swap" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Montserrat:wght@200;300;400;500;600&family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400;1,500&family=Great+Vibes&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <script>
@@ -14,7 +15,7 @@
             theme: {
                 extend: {
                     colors: {
-                        'olive': '#3A4A3B' /*'#91A080'*/,       /* Verde Oliva Oscuro */
+                        'olive': /*'#3A4A3B'*/ '#4c7164',       /* Verde Oliva Oscuro */
                         'sage': '#8A9A8B',        /* Salvia Suave */
                         'cream': '#FDFCF8',       /* Crema Papel */
                         'gold': '#B08D55',        /* Dorado Antiguo */
@@ -25,7 +26,8 @@
                         'serif': ['Italiana', 'serif'],           
                         'script': ['Pinyon Script', 'cursive'],   
                         'body': ['Cormorant Garamond', 'serif'],  
-                        'sans': ['Montserrat', 'sans-serif'],     
+                        'sans': ['Montserrat', 'sans-serif'], 
+                        'great': ['Great Vibes', 'cursive'], 
                     },
                     animation: {
                         'float': 'float 6s ease-in-out infinite',
@@ -149,7 +151,7 @@
                 <span class="font-sans text-xs tracking-[0.4em] uppercase text-olive block mb-6 ">Bienvenidos a nuestra boda</span>
                 <!-- <h1 class="font-script text-6xl md:text-8xl text-gold mb-8">Leo y Davi</h1> -->
                 <h1 class="font-script text-6xl md:text-8xl text-olive mb-8">
-                    Leo <span class="text-5xl md:text-7xl text-gold italic font-sans leading-[1.8] py-2 md:ml-12">&</span> Davi
+                    Davi <span class="text-5xl md:text-7xl text-gold italic font-sans">&</span> Leo 
                 </h1>
                 
                 <button onclick="playIntro()" class="group relative px-8 py-3 bg-transparent overflow-hidden rounded-full border border-olive text-olive transition-all hover:text-white">
@@ -194,21 +196,21 @@
             
             <!-- Columna Izquierda: Textos -->
             <div class="md:col-span-4 text-center md:text-left order-2 md:order-1 reveal delay-100">
-                <span class="font-sans text-xs tracking-[0.4em] uppercase text-gold block mb-4">Save The Date</span>
+                <span class="font-sans text-xs tracking-[0.4em] uppercase text-gold block mb-4">Guarda la Fecha</span>
                 
                 <h1 class="font-script text-olive flex flex-col items-center md:items-start">
-                    <span class="text-6xl md:text-8xl leading-tight">Leo</span>
+                    <span class="text-6xl md:text-8xl leading-tight">Davi</span>
                     
-                    <span class="text-5xl md:text-7xl text-gold italic font-sans leading-[1.8] py-2 md:ml-12">
+                    <span class="text-5xl md:text-7xl text-gold italic font-great leading-[1.8] py-2 md:ml-12">
                         &
                     </span>
             
-                    <span class="text-6xl md:text-8xl leading-tight">Davi</span>
+                    <span class="text-6xl md:text-8xl leading-tight">Leo</span>
                 </h1>
 
                 <div class="mt-8 flex items-center justify-center md:justify-start gap-4">
                     <div class="h-px w-12 bg-olive"></div>
-                    <!-- <p class="font-body text-xl italic text-gray-600">¡Nos casamos!</p> -->
+                    <p class="font-body text-2xl italic text-gray-600">¡Nos casamos!</p>
                 </div>
             </div>
 
@@ -230,7 +232,7 @@
                                 <path id="curve" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="transparent"/>
                                 <text class="text-[10px] uppercase font-sans tracking-widest fill-olive font-bold">
                                     <textPath xlink:href="#curve">
-                                        • 19 Junio 2026 • Vigo • 
+                                        • 19 Junio 2026 • Vigo •
                                     </textPath>
                                 </text>
                             </svg>
@@ -242,7 +244,7 @@
 
             <!-- Columna Derecha: Countdown -->
             <div class="md:col-span-4 text-center md:text-right order-3 reveal delay-200 mt-8 md:mt-0">
-                <p class="font-body text-lg text-gray-500 italic mb-6">Faltan para el sí...</p>
+                <p class="font-body text-2xl text-gray-500 italic mb-6">Faltan para el sí...</p>
                 <div id="countdown" class="flex justify-center md:justify-end gap-6 font-sans text-olive">
                     <div><span id="days" class="text-4xl block">00</span><span class="text-[0.6rem] uppercase tracking-widest text-sage">Días</span></div>
                     <div><span id="hours" class="text-4xl block">00</span><span class="text-[0.6rem] uppercase tracking-widest text-sage">Hrs</span></div>
@@ -344,7 +346,7 @@
         <div class="max-w-4xl mx-auto">
             <h2 class="text-center font-title text-3xl mb-16 text-gold tracking-widest uppercase font-serif">Itinerario</h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center reveal">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center reveal">
                 <!-- Step 1 -->
                 <div class="group">
                     <div class="w-20 h-20 mx-auto rounded-full border-2 border-gold flex items-center justify-center mb-6 group-hover:bg-gold group-hover:text-olive transition-all duration-300">
@@ -361,7 +363,7 @@
                         <i data-lucide="utensils-crossed" class="w-8 h-8"></i>
                     </div>
                     <h3 class="font-serif text-xl mb-2">19:00h</h3>
-                    <p class="font-body text-lg italic text-white/80">Recepción & Cena</p>
+                    <p class="font-body text-lg italic text-white/80">Recepción</p>
                     <p class="text-xs mt-2 text-white/50 font-sans uppercase">Rectoral de Cobres</p>
                 </div>
 
@@ -374,11 +376,20 @@
                     <p class="font-body text-lg italic text-white/80">Fiesta</p>
                     <p class="text-xs mt-2 text-white/50 font-sans uppercase">¡A Bailar!</p>
                 </div>
+                <!-- Step 4 -->
+                <div class="group">
+                    <div class="w-20 h-20 mx-auto rounded-full border-2 border-gold flex items-center justify-center mb-6 group-hover:bg-gold group-hover:text-olive transition-all duration-300">
+                        <i data-lucide="camera" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="font-serif text-xl mb-2">Toda la noche</h3>
+                    <p class="font-body text-lg italic text-white/80">Alerta Paparazzi</p>
+                    <p class="text-xs mt-2 text-white/50 font-sans uppercase">¡Sonreíd!</p>
+                </div>
             </div>
             
             <div class="mt-16 text-center border-t border-white/10 pt-8 reveal">
-                <i data-lucide="camera" class="w-6 h-6 mx-auto text-gold mb-2"></i>
-                <p class="font-serif text-2xl">¡Preparen sus mejores sonrisas que se vienen muchas fotos juntos!</p>
+                <i data-lucide="shirt" class="w-6 h-6 mx-auto text-gold mb-2"></i>
+                <p class="font-serif text-2xl">Codigo de Vestimenta: <span class="font-bold">Formal</span> </p>
             </div>
         </div>
     </section>
@@ -420,7 +431,7 @@
                     <div class="aspect-[4/3] overflow-hidden">
                         <img src="img/chiki.jpeg" class="w-full h-full object-cover">
                     </div>
-                    <p class="font-script text-center text-2xl text-gray-500 mt-2">Chikis forever</p>
+                    <p class="font-script text-center text-2xl text-gray-500 mt-2">Desde el 13/06/2016…</p>
                 </div>
             </div>
 
@@ -467,7 +478,7 @@
         <div class="max-w-2xl mx-auto bg-white p-8 md:p-12 shadow-2xl relative z-10 border border-olive/10 reveal">
             
             <div class="text-center mb-10">
-                <p class="font-sans text-xs tracking-[0.3em] text-gold uppercase mb-2">¡Reserva tu silla!</p>
+                <p class="font-sans text-xs tracking-[0.3em] text-gold uppercase mb-2">Antes del 19 de mayo</p>
                 <h2 class="font-serif text-4xl text-olive">Confirmación Individual</h2>
                 <div class="w-12 h-0.5 bg-olive mx-auto mt-4"></div>
             </div>
@@ -488,7 +499,7 @@
                         Nombre y Apellidos
                     </label> -->
                     <label class="block text-xs font-sans font-bold text-gold uppercase tracking-widest mb-2 text-center">
-                        Nombre y Apellidos
+                        Nombre
                     </label>
                     <input type="text" name="entry.810711785" required class="block w-full border-b border-gray-300 py-2 text-olive text-xl text-center bg-transparent focus:outline-none focus:border-gold transition-colors font-serif placeholder-gray-300" placeholder="">
                 
@@ -536,7 +547,7 @@
                      <label class="block text-xs font-sans font-bold text-gold uppercase tracking-widest mb-2 text-center">
                         Alergias / Intolerancias 
                     </label>
-                    <input type="text" name="entry.1414396014" required class="block w-full border-b border-gray-300 py-2 text-olive text-xl text-center bg-transparent focus:outline-none focus:border-gold transition-colors font-serif placeholder-gray-300" placeholder="">
+                    <input type="text" name="entry.1414396014"  class="block w-full border-b border-gray-300 py-2 text-olive text-xl text-center bg-transparent focus:outline-none focus:border-gold transition-colors font-serif placeholder-gray-300" placeholder="(Opcional)">
                 
                 </div>
 
@@ -548,9 +559,9 @@
                         Mensaje (opcional)
                     </label> -->
                     <label class="block text-xs font-sans font-bold text-gold uppercase tracking-widest mb-2 text-center">
-                        Mensaje (opcional)
+                        Mensaje
                     </label>
-                    <input type="text" name="entry.186717456" required class="block w-full border-b border-gray-300 py-2 text-olive text-xl text-center bg-transparent focus:outline-none focus:border-gold transition-colors font-serif placeholder-gray-300" placeholder="">
+                    <input type="text" name="entry.186717456"  class="block w-full border-b border-gray-300 py-2 text-olive text-xl text-center bg-transparent focus:outline-none focus:border-gold transition-colors font-serif placeholder-gray-300" placeholder="(Opcional)">
                 
                 </div>
 
@@ -583,7 +594,7 @@
         <div class="relative z-10">
             <!-- <h2 class="font-script text-[4rem] md:text-[6rem] text-gold leading-none mb-2">Leo y Davi</h2> -->
              <h1 class="font-script text-6xl md:text-8xl text-gold mb-8">
-                    Leo <span class="text-5xl md:text-7xl text-gold italic font-sans leading-[1.8] py-2 md:ml-12">&</span> Davi
+                    Davi <span class="text-5xl md:text-7xl text-gold italic font-great ">&</span> Leo
                 </h1>
             <p class="font-serif text-lg italic text-white-800 mb-12">19 de Junio de 2026</p>
             <p class="text-[10px] text-white-600 font-sans uppercase tracking-widest">
@@ -739,6 +750,3 @@
 </script>
 </body>
 </html>
-
-
-
